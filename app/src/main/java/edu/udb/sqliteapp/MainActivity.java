@@ -2,7 +2,9 @@ package edu.udb.sqliteapp;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -25,20 +27,30 @@ public class MainActivity extends AppCompatActivity {
 
     public void alta(View v) {
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this,"administracion", null, 1);
+
         SQLiteDatabase bd = admin.getWritableDatabase();
+
         String cod = et1.getText().toString();
         String descri = et2.getText().toString();
         String pre = et3.getText().toString();
+
         ContentValues registro = new ContentValues();
+
         registro.put("codigo", cod);
         registro.put("descripcion", descri);
         registro.put("precio", pre);
-        bd.insert("articulos", null, registro);
-        bd.close();
-        et1.setText("");
-        et2.setText("");
-        et3.setText("");
-        Toast.makeText(this, "Se cargaron los datos del artículo",Toast.LENGTH_SHORT).show();
+
+        try {
+            bd.insertOrThrow("articulos", null, registro);
+            bd.close();
+            et1.setText("");
+            et2.setText("");
+            et3.setText("");
+            Toast.makeText(this, "Se cargaron los datos del artículo",Toast.LENGTH_SHORT).show();
+        } catch (SQLiteException e) {
+            Toast.makeText(this, "ERROR!! No se cargaron los datos del artículo" + e.getMessage(),Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void consultaporcodigo(View v) {
