@@ -1,5 +1,5 @@
-# LoginFirebaseApp
-Este proyecto de Android es para realizar un ejemplo de Login con Firebase 
+# SQLiteApp
+Este proyecto es un ejemplo de como implementar un CRUD con SQLite en Android
 
 # android-template
 
